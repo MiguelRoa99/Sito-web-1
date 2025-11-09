@@ -1,0 +1,27 @@
+version: '3.8'
+services:
+  backend:
+    build:
+      context: ./backend
+    container_name: inventario_backend
+    restart: unless-stopped
+    expose:
+      - "3000"
+    volumes:
+      - backend_data:/app/data
+      - ./backend/data.json:/app/data.json # opcional: montamos archivo data.json local (si existe) para persistencia local
+    environment:
+      - PORT=3000
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: inventario_frontend
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  backend_data:

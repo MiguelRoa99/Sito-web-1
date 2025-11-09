@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Inventario sencillo</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <div class="app">
+    <header>
+      <div class="header-left">
+        <h1>Requisitos</h1>
+        <div class="muted">Selección de imagen</div>
+      </div>
+      <div class="header-right">
+        <div class="search-container">
+          <input type="search" id="searchInput" placeholder="Buscar items..." class="search-input" />
+          <div id="searchResults" class="search-results"></div>
+          <button id="clearFilterBtn" class="clear-filter-btn" title="Mostrar todos" aria-label="Mostrar todos">×</button>
+        </div>
+        <button id="themeToggle" class="theme-toggle" aria-label="Cambiar tema">
+          <svg class="sun-icon" viewBox="0 0 24 24" width="24" height="24">
+            <path fill="currentColor" d="M12 18C8.68629 18 6 15.3137 6 12C6 8.68629 8.68629 6 12 6C15.3137 6 18 8.68629 18 12C18 15.3137 15.3137 18 12 18ZM12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8C9.79086 8 8 9.79086 8 12C8 14.2091 9.79086 16 12 16ZM11 1H13V4H11V1ZM11 20H13V23H11V20ZM3.51472 4.92893L4.92893 3.51472L7.05025 5.63604L5.63604 7.05025L3.51472 4.92893ZM16.9497 18.364L18.364 16.9497L20.4853 19.0711L19.0711 20.4853L16.9497 18.364ZM19.0711 3.51472L20.4853 4.92893L18.364 7.05025L16.9497 5.63604L19.0711 3.51472ZM5.63604 16.9497L7.05025 18.364L4.92893 20.4853L3.51472 19.0711L5.63604 16.9497ZM23 11V13H20V11H23ZM4 11V13H1V11H4Z"/>
+          </svg>
+          <svg class="moon-icon" viewBox="0 0 24 24" width="24" height="24">
+            <path fill="currentColor" d="M9.37,5.51C9.19,6.15,9.1,6.82,9.1,7.5c0,4.08,3.32,7.4,7.4,7.4c0.68,0,1.35-0.09,1.99-0.27C17.45,17.19,14.93,19,12,19 c-3.86,0-7-3.14-7-7C5,9.07,6.81,6.55,9.37,5.51z M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36 c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"/>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <section class="card">
+      <form id="itemForm" class="form-grid">
+        <div class="form-left">
+          <label for="name">Nombre</label>
+          <input id="name" type="text" required placeholder="Ej: Tornillos M4" />
+
+          <label for="qty" class="mt8">Cantidad</label>
+          <input id="qty" type="number" min="0" value="1" required />
+
+          <label for="price" class="mt8">Precio (COP)</label>
+          <input id="price" type="number" step="0.01" min="0" value="0.00" required />
+
+          <label for="desc" class="mt8">Descripción (opcional)</label>
+          <textarea id="desc" placeholder="Detalles, ubicación..."></textarea>
+        </div>
+
+        <div class="form-right">
+          <label for="imageInput">Imagen</label>
+          <div class="img-preview" id="preview">
+            <span class="muted small">Sin imagen</span>
+          </div>
+          <input id="imageInput" type="file" accept="image/*" class="mt8" />
+
+          <div class="controls mt12">
+            <button id="addBtn" type="submit">Agregar</button>
+            <button id="clearBtn" type="button" class="ghost">Limpiar</button>
+          </div>
+        </div>
+      </form>
+
+      <h2 class="inventory-title">Lista de inventario</h2>
+      <div id="items" class="grid" aria-live="polite"></div>
+    </section>
+  </div>
+
+  <!-- Modal edición -->
+  <div id="modal" class="modal-backdrop" aria-hidden="true">
+    <div class="modal">
+      <h2 id="modalTitle">Editar item</h2>
+      <div class="row">
+        <div style="flex:1">
+          <label>Nombre</label>
+          <input id="e_name" type="text" />
+
+          <label class="mt8">Cantidad</label>
+          <input id="e_qty" type="number" min="0" />
+
+          <label class="mt8">Precio (COP)</label>
+          <input id="e_price" type="number" step="0.01" min="0" />
+
+          <label class="mt8">Descripción</label>
+          <textarea id="e_desc"></textarea>
+        </div>
+        <div style="width:auto;max-width:220px">
+          <label>Imagen</label>
+          <div class="img-preview" id="e_preview">
+            <span class="muted small">Sin imagen</span>
+          </div>
+          <input id="e_imageInput" type="file" accept="image/*" class="mt8" />
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button id="saveEdit">Guardar</button>
+        <button id="closeModal" class="ghost">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/app.js"></script>
+</body>
+</html>
