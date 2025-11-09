@@ -61,14 +61,6 @@ El proyecto está dividido en dos servicios principales gestionados por Docker C
     * **Tecnología:** HTML, CSS, JavaScript (servido por Nginx).
     * **Propósito:** Interfaz de usuario, consume los endpoints del servicio `backend`.
  
-5. Contribuciones y Contacto
-## 🤝 Contribuciones
-Las contribuciones son bienvenidas. Por favor, abre un 'issue' o envía un 'pull request' para sugerir mejoras o reportar errores.
-## ✉️ Contacto
-* **Autores:** [Julian David Romero Hernandez / Jhoan Prieto Sanchez / Jeisson Camilo Lopez Bello / Miguel Ángel Roa Pinzón / Andrey Suarez Suarez]
-* **Email:** [Janprietos@poligran.edu.co / mangroa@poligran.edu.co / jdavidromero@poligran.edu.co / jcamilolopez3@poligran.edu.co /  astsuarez@poligran.edu.co]
-* **Subgrupo:**[6].
-
 
 ## Integración con Jenkins (CI/CD)
 
@@ -99,7 +91,13 @@ Archivo de prueba de smoke-tests: `scripts/jenkins_smoke_test.sh` (incluido) —
 Si quieres que amplíe la pipeline (p.ej. publicar imágenes en un registry, ejecutar tests unitarios, o desplegar en un entorno remoto), dime qué sistemas usas (Docker Hub, GitHub Packages, Kubernetes, etc.) y lo incorporo.
 
 
-
+5. Contribuciones y Contacto
+## 🤝 Contribuciones
+Las contribuciones son bienvenidas. Por favor, abre un 'issue' o envía un 'pull request' para sugerir mejoras o reportar errores.
+## ✉️ Contacto
+* **Autores:** [Julian David Romero Hernandez / Jhoan Prieto Sanchez / Jeisson Camilo Lopez Bello / Miguel Ángel Roa Pinzón / Andrey Suarez Suarez]
+* **Email:** [Janprietos@poligran.edu.co / mangroa@poligran.edu.co / jdavidromero@poligran.edu.co / jcamilolopez3@poligran.edu.co /  astsuarez@poligran.edu.co]
+* **Subgrupo:**[6].
 
 
 
