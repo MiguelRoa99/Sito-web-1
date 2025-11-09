@@ -61,27 +61,26 @@ El proyecto está dividido en dos servicios principales gestionados por Docker C
     * **Tecnología:** HTML, CSS, JavaScript (servido por Nginx).
     * **Propósito:** Interfaz de usuario, consume los endpoints del servicio `backend`.
  
-
-## Integración con Jenkins (CI/CD)
+5. Integración con Jenkins (CI/CD)
 
 Se incluye un `Jenkinsfile` en la raíz del repositorio para ejecutar una pipeline básica que construye las imágenes Docker, levanta los servicios con `docker-compose`, ejecuta pruebas de verificación (smoke tests) y limpia los recursos.
 
-Requisitos del executor/agent de Jenkins:
+## Requisitos del executor/agent de Jenkins:
 - Un agente Jenkins con Docker y Docker Compose instalados y acceso al daemon Docker (usualmente un agente Linux).
 - Permisos para ejecutar `docker` y `docker-compose`.
 
-Resumen de la pipeline (`Jenkinsfile`):
+## Resumen de la pipeline (`Jenkinsfile`):
 - checkout
 - build: `docker-compose build`
 - deploy: `docker-compose up -d`
 - smoke-test: ejecuta `scripts/jenkins_smoke_test.sh` (hace curl a frontend y backend)
 - cleanup: `docker-compose down -v`
 
-Notas importantes:
+## Notas importantes:
 - El `Jenkinsfile` asume que Jenkins ejecuta los pasos en un agente Linux con Docker. Si tu servidor Jenkins corre en Windows, debes usar un agent que soporte Docker (por ejemplo WSL2) o adaptar los pasos usando `bat` en lugar de `sh`.
 - La pipeline devolverá error si el smoke-test falla (código de salida distinto de 0).
 
-Cómo usar:
+## Cómo usar:
 1. Asegúrate de que tu agente Jenkins tenga Docker y Docker Compose instalados y que el usuario de Jenkins pueda ejecutar comandos Docker.
 2. Crea un nuevo Job de tipo Pipeline o Multibranch Pipeline y configura el repositorio para que lea el `Jenkinsfile` en la raíz.
 3. Ejecuta el job. Jenkins construirá y desplegará los contenedores en el agente y ejecutará las comprobaciones.
@@ -91,7 +90,7 @@ Archivo de prueba de smoke-tests: `scripts/jenkins_smoke_test.sh` (incluido) —
 Si quieres que amplíe la pipeline (p.ej. publicar imágenes en un registry, ejecutar tests unitarios, o desplegar en un entorno remoto), dime qué sistemas usas (Docker Hub, GitHub Packages, Kubernetes, etc.) y lo incorporo.
 
 
-5. Contribuciones y Contacto
+6. Contribuciones y Contacto
 ## 🤝 Contribuciones
 Las contribuciones son bienvenidas. Por favor, abre un 'issue' o envía un 'pull request' para sugerir mejoras o reportar errores.
 ## ✉️ Contacto
