@@ -15,14 +15,17 @@ pipeline {
     stage('Build images') {
       steps {
         echo "Construyendo imágenes con docker-compose..."
-        sh 'docker-compose -f $COMPOSE_FILE build'
+        // Asegurar que no queden contenedores/volúmenes de ejecuciones previas que causen conflictos
+        sh 'docker-compose -f $COMPOSE_FILE -p ${COMPOSE_PROJECT_NAME}_${BUILD_NUMBER} down -v || true'
+        sh 'docker-compose -f $COMPOSE_FILE -p ${COMPOSE_PROJECT_NAME}_${BUILD_NUMBER} build'
       }
     }
 
     stage('Deploy') {
       steps {
         echo "Levantando servicios (docker-compose up -d)..."
-        sh 'docker-compose -f $COMPOSE_FILE up -d'
+        // Usar nombre de proyecto único por build y forzar recreado/remoción de orígenes huérfanos
+        sh 'docker-compose -f $COMPOSE_FILE -p ${COMPOSE_PROJECT_NAME}_${BUILD_NUMBER} up -d --force-recreate --remove-orphans'
       }
     }
 
@@ -38,7 +41,8 @@ pipeline {
   post {
     always {
       echo 'Limpiando contenedores (docker-compose down -v)'
-      sh 'docker-compose -f $COMPOSE_FILE down -v || true'
+      // Limpiar usando el mismo nombre de proyecto único
+      sh 'docker-compose -f $COMPOSE_FILE -p ${COMPOSE_PROJECT_NAME}_${BUILD_NUMBER} down -v || true'
     }
     success {
       echo 'Pipeline completada con éxito.'
