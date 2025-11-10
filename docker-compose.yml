@@ -3,7 +3,9 @@ services:
   backend:
     build:
       context: ./backend
-    container_name: inventario_backend
+    # Usar nombre parametrizado para evitar conflictos de nombres entre builds
+    # Requiere que las variables de entorno COMPOSE_PROJECT_NAME y BUILD_NUMBER estén definidas
+    container_name: "${COMPOSE_PROJECT_NAME}_${BUILD_NUMBER}_backend"
     restart: unless-stopped
     expose:
       - "3000"
@@ -16,7 +18,8 @@ services:
   frontend:
     build:
       context: ./frontend
-    container_name: inventario_frontend
+    # Nombre parametrizado para frontend
+    container_name: "${COMPOSE_PROJECT_NAME}_${BUILD_NUMBER}_frontend"
     ports:
       - "8080:80"
     depends_on:
