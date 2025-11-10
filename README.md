@@ -96,7 +96,7 @@ Las contribuciones son bienvenidas. Por favor, abre un 'issue' o envía un 'pull
 ## ✉️ Contacto
 * **Autores:** [Julian David Romero Hernandez / Jhoan Prieto Sanchez / Jeisson Camilo Lopez Bello / Miguel Ángel Roa Pinzón / Andrey Suarez Suarez]
 * **Email:** [Janprietos@poligran.edu.co / mangroa@poligran.edu.co / jdavidromero@poligran.edu.co / jcamilolopez3@poligran.edu.co /  astsuarez@poligran.edu.co]
-* **Subgrupo:**[6].....
+* **Subgrupo:**[6].
 
 
 
