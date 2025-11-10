@@ -22,7 +22,16 @@ pipeline {
     stage('Deploy') {
       steps {
         echo "Levantando servicios (docker-compose up -d)..."
-        sh 'docker-compose -f $COMPOSE_FILE up -d'
+        sh '''
+# Eliminar cualquier contenedor con nombre fijo que cause conflicto antes de levantar los servicios
+if docker ps -a --filter "name=^/inventario_backend$" --format "{{.ID}}" | grep -q . ; then
+  echo "Contenedor 'inventario_backend' existe — eliminando..."
+  docker rm -f inventario_backend || true
+fi
+
+# Levantar servicios y eliminar contenedores huérfanos si los hay
+docker-compose -f $COMPOSE_FILE up -d --remove-orphans
+'''
       }
     }
 
