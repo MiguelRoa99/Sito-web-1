@@ -1,0 +1,9 @@
+version: '3.8'
+
+# Override para entornos CI: eliminar el mapeo de puertos hacia el host
+# Dejar exposición interna para que los smoke tests puedan usar la red Docker
+services:
+  frontend:
+    ports: []
+    expose:
+      - "80"

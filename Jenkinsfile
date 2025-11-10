@@ -16,8 +16,9 @@ pipeline {
       steps {
         echo "Construyendo imágenes con docker-compose..."
         // Asegurar que no queden contenedores/volúmenes de ejecuciones previas que causen conflictos
-        sh 'docker-compose -f $COMPOSE_FILE -p ${COMPOSE_PROJECT_NAME}_${BUILD_NUMBER} down -v || true'
-        sh 'docker-compose -f $COMPOSE_FILE -p ${COMPOSE_PROJECT_NAME}_${BUILD_NUMBER} build'
+  // Usar override específico para CI que elimina el mapeo al host (evita conflictos de puertos)
+  sh 'docker-compose -f $COMPOSE_FILE -f docker-compose.ci.yml -p ${COMPOSE_PROJECT_NAME}_${BUILD_NUMBER} down -v || true'
+  sh 'docker-compose -f $COMPOSE_FILE -f docker-compose.ci.yml -p ${COMPOSE_PROJECT_NAME}_${BUILD_NUMBER} build'
       }
     }
 
@@ -25,7 +26,8 @@ pipeline {
       steps {
         echo "Levantando servicios (docker-compose up -d)..."
         // Usar nombre de proyecto único por build y forzar recreado/remoción de orígenes huérfanos
-        sh 'docker-compose -f $COMPOSE_FILE -p ${COMPOSE_PROJECT_NAME}_${BUILD_NUMBER} up -d --force-recreate --remove-orphans'
+  // Levantar sin mapear puertos al host en CI (las pruebas usan la red docker interna)
+  sh 'docker-compose -f $COMPOSE_FILE -f docker-compose.ci.yml -p ${COMPOSE_PROJECT_NAME}_${BUILD_NUMBER} up -d --force-recreate --remove-orphans'
       }
     }
 
@@ -42,7 +44,7 @@ pipeline {
     always {
       echo 'Limpiando contenedores (docker-compose down -v)'
       // Limpiar usando el mismo nombre de proyecto único
-      sh 'docker-compose -f $COMPOSE_FILE -p ${COMPOSE_PROJECT_NAME}_${BUILD_NUMBER} down -v || true'
+  sh 'docker-compose -f $COMPOSE_FILE -f docker-compose.ci.yml -p ${COMPOSE_PROJECT_NAME}_${BUILD_NUMBER} down -v || true'
     }
     success {
       echo 'Pipeline completada con éxito.'
