@@ -3,9 +3,9 @@ services:
   backend:
     build:
       context: ./backend
-    # Usar nombre parametrizado para evitar conflictos de nombres entre builds
-    # Requiere que las variables de entorno COMPOSE_PROJECT_NAME y BUILD_NUMBER estén definidas
-    container_name: "${COMPOSE_PROJECT_NAME}_${BUILD_NUMBER}_backend"
+  # No fijamos `container_name` para evitar conflictos: permitimos que docker-compose
+  # asigne nombres con el prefijo del proyecto. Esto mantiene los hostnames internos
+  # de la red como `backend` y `frontend`, que son más fáciles de usar en pruebas.
     restart: unless-stopped
     expose:
       - "3000"
@@ -18,8 +18,7 @@ services:
   frontend:
     build:
       context: ./frontend
-    # Nombre parametrizado para frontend
-    container_name: "${COMPOSE_PROJECT_NAME}_${BUILD_NUMBER}_frontend"
+  # No fijamos `container_name` para evitar conflictos (ver comentario anterior).
     ports:
       - "8080:80"
     depends_on:
