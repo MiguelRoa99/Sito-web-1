@@ -26,8 +26,21 @@ pipeline {
       steps {
         echo "Levantando servicios (docker-compose up -d)..."
         // Usar nombre de proyecto único por build y forzar recreado/remoción de orígenes huérfanos
-  // Levantar sin mapear puertos al host en CI (las pruebas usan la red docker interna)
-  sh 'docker-compose -f $COMPOSE_FILE -f docker-compose.ci.yml -p ${COMPOSE_PROJECT_NAME}_${BUILD_NUMBER} up -d --force-recreate --remove-orphans'
+        // Antes de levantar, intentar liberar el puerto 8080 si está ocupado por contenedores relacionados
+        sh '''
+          echo "Verificando si hay contenedores publicando el puerto 8080..."
+          docker ps --format '{{.ID}} {{.Names}} {{.Ports}}' | grep -E '0.0.0.0:8080' || true
+          TO_REMOVE=$(docker ps --filter publish=8080 --format '{{.ID}} {{.Names}}' | awk '$2 ~ /inventario/ {print $1}' || true)
+          if [ -n "$TO_REMOVE" ]; then
+            echo "Contenedores que ocupan 8080 y contienen 'inventario':"
+            docker ps --filter publish=8080 --format '{{.ID}} {{.Names}} {{.Ports}}' | awk '$2 ~ /inventario/ {print $0}'
+            echo "$TO_REMOVE" | xargs -r docker rm -f
+          else
+            echo "No se encontraron contenedores 'inventario' ocupando 8080."
+          fi
+
+          docker-compose -f $COMPOSE_FILE -f docker-compose.ci.yml -p ${COMPOSE_PROJECT_NAME}_${BUILD_NUMBER} up -d --force-recreate --remove-orphans
+        '''
       }
     }
 
